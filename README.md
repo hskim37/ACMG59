@@ -1,5 +1,5 @@
 # EVcouplings-EVfold
-I wrote these Python files to facilitate the usage of the EVcouplings-EVfold software in my project on the ACMG59 genes.
+I wrote these Python files to facilitate the usage of the EVcouplings-EVfold software in my project on the ACMG 59 genes (list of clinically actionable disease genes maintained by the American College of Medical Genetics and Genomics).
 I am currently working on this project for my MIT(Massachusetts Institute of Technology) UROP(Undergraduate Research Opportunities Program) as a research intern at Harvard Medical School.
 
 # extend.py
