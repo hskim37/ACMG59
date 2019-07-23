@@ -1,5 +1,6 @@
 # Takes gene as input
 # Obtains and returns list of region_threshold as strings from actual output results
+# Sorts paths by the length of the amino acid sequence, the starting and ending point of the region, and the threshold.
 import os
 
 def outputCoords(gene):
