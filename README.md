@@ -9,3 +9,7 @@ Extends regions by
 # stats.py
 Extracts all existing EVcouplings-EVfold alignment data for input gene,
 arranges and prints data in comma-separated form so that it can be copied and pasted to spreadsheet right away.
+
+# outputCoords.py
+Helper function for extend.py and stats.py.
+Obtains all existing file paths for specified gene.
