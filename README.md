@@ -1,4 +1,6 @@
 # EVcouplings-EVfold
+I wrote these Python files to facilitate the usage of the EVcouplings-EVfold software in my project on the ACMG59 genes.
+I am currently working on this project for my MIT(Massachusetts Institute of Technology) UROP(Undergraduate Research Opportunities Program) as a research intern at Harvard Medical School.
 
 # extend.py
 Draws extendable regions from existing EVcouplings-EVfold alignment data and directly executes commands for extending those regions.
