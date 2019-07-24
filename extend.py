@@ -27,7 +27,7 @@ def extend(gene):
         geneLen = max([x[1] for x in existingRegions])
         
         try:
-            csv = '/n/scratch2/rg252/ACMG59_NEW/%s/%s/align/%s_alignment_statistics.csv' %(gene,path,path)
+            csv = '/n/scratch2/rg252/ACMG59_NEW/{}/{}/align/{}_alignment_statistics.csv'.format(gene,path,path)
             with open(csv) as f:
                 stats = ((f.readlines())[1]).split(',')
             path,mincov,nseqs,seqlen,ncov,nlc,perc,fuc,luc,lencov,nlcov,neff = stats
