@@ -79,7 +79,7 @@ def extend(gene):
                 if end>geneLen:
                     end = geneLen
                     
-                if (start,end) not in ruleSatisfied:
+                if (start,end) not in existingRegions:
                     if len(runThresh)>=4:
                         commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
                             .format(gene,start,end,gene,start,end))   
