@@ -77,7 +77,7 @@ def extend(gene):
                     
                 runThresh = [x for x in thresholdList if x<=maxThresh]
                 
-                if ((start,end) not in existingRegions) and start>=1 and end<=geneLen:
+                if (start,end) not in existingRegions:
                     if len(runThresh)>=4:
                         commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
                             .format(gene,start,end,gene,start,end))   
