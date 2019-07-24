@@ -39,7 +39,7 @@ def extend(gene):
             print('ERROR')
             return
     
-    allCommands = []
+    commands = []
 
     thresholdList = [0.3,0.5,0.7,0.8]
     for key1 in ruleSatisfied: # Only regions(keys) that satisfy the 5x rule
@@ -51,6 +51,17 @@ def extend(gene):
             end = end1+50
             maxThresh = ruleSatisfied[key1]
 
+            runThresh = [x for x in thresholdList if x<=maxThresh]
+            
+            if ((start,end) not in existingRegions) and start>=1 and end<=geneLen:
+                if len(runThresh)>=4:
+                    commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
+                        .format(gene,start,end,gene,start,end))   
+                else:
+                    for thresh in runThresh:
+                        commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
+                            .format(gene,start,end,thresh,gene,thresh,start,end))
+
         else:
             for key2 in filteredDict:
                 start2,end2 = key2
@@ -58,22 +69,29 @@ def extend(gene):
                 end = end2
                 maxThresh = max(ruleSatisfied[key1],ruleSatisfied[key2])
                     
-        runThresh = [x for x in thresholdList if x<=maxThresh]
-        
-        if ((start,end) not in existingRegions) and start>=1 and end<=geneLen:
-            if len(runThresh)>=4:
-                allCommands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
-                    .format(gene,start,end,gene,start,end))   
-            else:
-                for thresh in runThresh:
-                    allCommands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
-                        .format(gene,start,end,thresh,gene,thresh,start,end))
+                runThresh = [x for x in thresholdList if x<=maxThresh]
+                
+                if ((start,end) not in existingRegions) and start>=1 and end<=geneLen:
+                    if len(runThresh)>=4:
+                        commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
+                            .format(gene,start,end,gene,start,end))   
+                    else:
+                        for thresh in runThresh:
+                            commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
+                                .format(gene,start,end,thresh,gene,thresh,start,end))
                         
-    if len(allCommands)>0:                         
-        for command in allCommands:
+    for command in commands:
+        if commands.count(command)>=2:
+            commands.remove(command)
+    
+    commands.sort(key=lambda x:(int((((x.split()[2]).split('/')[-1]).split('_')[1]).split('-')[0]),
+                                            int((((x.split()[2]).split('/')[-1]).split('_')[1]).split('-')[1])))
+                        
+    if len(commands)>0:                         
+        for command in commands:
             print(command)
         if (raw_input('\nExecute? Y / N -> ')).lower()=='y':
-            for command in allCommands:
+            for command in commands:
                 print('\n{}'.format(command))
                 os.system(command)
     else:
