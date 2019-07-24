@@ -45,19 +45,20 @@ def extend(gene):
     thresholdList = [0.3,0.5,0.7,0.8]
     for key1 in ruleSatisfied: # Only regions(keys) that satisfy the 5x rule
         start1,end1 = key1
+        thresh1 = ruleSatisfied[key1]
         filteredDict = {x:y for x,y in ruleSatisfied.items() if x[0]==end1+1}
         
         if len(filteredDict)==0:
-            start = start1-50
-            end = end1+50
-            maxThresh = ruleSatisfied[key1]
+            filteredDict = {key1:thresh1}
 
+        for key2 in filteredDict:
+            start2,end2 = key2
+            thresh2 = ruleSatisfied[key2]
+            start = start1
+            end = end2
+            maxThresh = max(thresh1,thresh2)
+                
             runThresh = [x for x in thresholdList if x<=maxThresh]
-            
-            if start<1:
-                start = 1
-            if end>geneLen:
-                end = geneLen
             
             if (start,end) not in existingRegions:
                 if len(runThresh)>=4:
@@ -67,25 +68,25 @@ def extend(gene):
                     for thresh in runThresh:
                         commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
                             .format(gene,start,end,thresh,gene,thresh,start,end))
-
-        else:
-            for key2 in filteredDict:
-                start2,end2 = key2
-                start = start1
-                end = end2
-                maxThresh = max(ruleSatisfied[key1],ruleSatisfied[key2])
+                            
+            else:
+                if (start,end) not in ruleSatisfied:
+                    start = start1-50
+                    end = end2+50
                     
-                runThresh = [x for x in thresholdList if x<=maxThresh]
-                
-                if (start,end) not in existingRegions:
+                    if start<1:
+                        start = 1
+                    if end>geneLen:
+                        end = geneLen
+                        
                     if len(runThresh)>=4:
                         commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
                             .format(gene,start,end,gene,start,end))   
                     else:
                         for thresh in runThresh:
                             commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
-                                .format(gene,start,end,thresh,gene,thresh,start,end))
-                        
+                                .format(gene,start,end,thresh,gene,thresh,start,end))                
+                            
     for command in commands:
         if commands.count(command)>=2:
             commands.remove(command)
