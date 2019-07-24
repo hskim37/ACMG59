@@ -7,11 +7,17 @@ Draws extendable regions from existing EVcouplings-EVfold alignment data and dir
 Extends regions by
 1. joining consecutive regions that satisfy the rule and
 2. stretching 50 amino acids both to the left and to the right if an isolated region satisfies the rule.
+Keeps record of submitted jobs in log.txt.
 
 # stats.py
 Extracts all existing EVcouplings-EVfold alignment data for input gene,
 arranges and prints data in comma-separated form so that it can be copied and pasted to spreadsheet right away.
+Keeps record of submitted jobs in log.txt.
 
 # outputCoords.py
 Helper function for extend.py and stats.py.
 Obtains all existing file paths for specified gene.
+
+# log.py
+Helper function for extend.py and stats.py.
+Appends submitted commands to log.txt with the time at which they were executed.
