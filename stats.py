@@ -2,6 +2,7 @@ from __future__ import print_function
 from outputCoords import outputCoords
 import sys
 import os
+from log import log
 
 def stats(ID,gene):
     paths = outputCoords(gene) # list of strings
@@ -43,6 +44,7 @@ def stats(ID,gene):
             for command in commandList:
                  print('\n{}'.format(command))
                  os.system(command)
+                 log(command)
 
 def main():
     ID = sys.argv[1]
