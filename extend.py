@@ -6,6 +6,7 @@ from collections import OrderedDict
 import sys
 from outputCoords import outputCoords
 import os
+from log import log
 
 def extend(gene):
     existingPaths = outputCoords(gene) # ['1-100_0.3-0.5','1-100_0.5-0.5',...]
@@ -94,6 +95,7 @@ def extend(gene):
             for command in commands:
                 print('\n{}'.format(command))
                 os.system(command)
+                log(command)
     else:
         print('No more regions to extend.')
 
