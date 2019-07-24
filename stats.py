@@ -13,7 +13,7 @@ def stats(ID,gene):
         region = path.split('_')[0]
         thresh = (path.split('_')[1]).split('-')[0]
         
-        csv = '/n/scratch2/rg252/ACMG59_NEW/%s/%s/align/%s_alignment_statistics.csv' %(gene,path,path)
+        csv = '/n/scratch2/rg252/ACMG59_NEW/{}/{}/align/{}_alignment_statistics.csv'.format(gene,path,path)
         
         try:
             with open(csv) as f:
