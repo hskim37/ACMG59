@@ -70,22 +70,23 @@ def extend(gene):
                             .format(gene,start,end,thresh,gene,thresh,start,end))
                             
             else:
-                if (start,end) not in ruleSatisfied:
-                    start = start1-50
-                    end = end2+50
+
+                start = start1-50
+                end = end2+50
+                
+                if start<1:
+                    start = 1
+                if end>geneLen:
+                    end = geneLen
                     
-                    if start<1:
-                        start = 1
-                    if end>geneLen:
-                        end = geneLen
-                        
+                if (start,end) not in ruleSatisfied:
                     if len(runThresh)>=4:
                         commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
                             .format(gene,start,end,gene,start,end))   
                     else:
                         for thresh in runThresh:
                             commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
-                                .format(gene,start,end,thresh,gene,thresh,start,end))                
+                                .format(gene,start,end,thresh,gene,thresh,start,end))               
                             
     for command in commands:
         if commands.count(command)>=2:
