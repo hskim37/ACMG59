@@ -7,6 +7,17 @@ from log import log
 def stats(ID,gene):
     paths = outputCoords(gene) # list of strings
     
+    smallAreas = []
+    
+    for path in paths[:4]:
+        if int((path.split('_')[0]).split('-')[1])-int((path.split('_')[0]).split('-')[0])<99:
+            paths.remove(path)
+            smallAreas.append(path)
+
+    geneLen = max([int((x.split('_')[0]).split('-')[1]) for x in paths])
+    index = (geneLen//100)*4
+    paths[index:index] = smallAreas
+    
     errorList = []
     
     for path in paths:
