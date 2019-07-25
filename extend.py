@@ -15,6 +15,12 @@ def extend(gene):
     
     ruleSatisfied = OrderedDict() # {(1,100):0.3,(201,300):0.5,...}
     
+    with open('/home/rg252/setup/ACMG_MasterList.csv') as f:
+        for line in f:
+            split = line.split(',')
+            if split[0]==gene:
+                geneLen = int(split[2])
+    
     for path in existingPaths:
         start = int((path.split('_')[0]).split('-')[0])
         end = int((path.split('_')[0]).split('-')[-1])
@@ -24,8 +30,6 @@ def extend(gene):
         
         if region not in existingRegions:
             existingRegions.append(region)
-            
-        geneLen = max([x[1] for x in existingRegions])
         
         try:
             csv = '/n/scratch2/rg252/ACMG59_NEW/{}/{}/align/{}_alignment_statistics.csv'.format(gene,path,path)
