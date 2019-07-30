@@ -1,6 +1,3 @@
-# For regions that don't overlap
-# ex) 1-100, 101-200, ...
-
 from __future__ import print_function
 from collections import OrderedDict
 import sys
@@ -44,9 +41,9 @@ def extend(gene):
             print('ERROR')
             return
     
-    commands = []
+    tuples = []
+    secondRegions = []
 
-    thresholdList = [0.3,0.5,0.7,0.8]
     for key1 in ruleSatisfied: # Only regions(keys) that satisfy the 5x rule
         start1,end1 = key1
         thresh1 = ruleSatisfied[key1]
@@ -62,42 +59,39 @@ def extend(gene):
             end = end2
             maxThresh = max(thresh1,thresh2)
                 
-            runThresh = [x for x in thresholdList if x<=maxThresh]
+            # runThresh = [x for x in thresholdList if x<=maxThresh]
             
             if (start,end) not in existingRegions:
-                if len(runThresh)>=4:
-                    commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
-                        .format(gene,start,end,gene,start,end))   
-                else:
-                    for thresh in runThresh:
-                        commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
-                            .format(gene,start,end,thresh,gene,thresh,start,end))
+                tuples.append((start,end,maxThresh))
+                existingRegions.append((start,end))
+                secondRegions.append(key2)
                             
-            else:
-
-                start = start1-50
-                end = end2+50
+        else:
+            start = start1-50
+            end = end2+50
+            
+            if start<1:
+                start = 1
+            if end>geneLen:
+                end = geneLen
                 
-                if start<1:
-                    start = 1
-                if end>geneLen:
-                    end = geneLen
-                    
-                if (start,end) not in existingRegions:
-                    if len(runThresh)>=4:
-                        commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'
-                            .format(gene,start,end,gene,start,end))   
-                    else:
-                        for thresh in runThresh:
-                            commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'
-                                .format(gene,start,end,thresh,gene,thresh,start,end))               
-                            
-    for command in commands:
-        if commands.count(command)>=2:
-            commands.remove(command)
+            if ((start,end) not in existingRegions) and (key1 not in secondRegions):
+                tuples.append((start,end,maxThresh))
+                existingRegions.append((start,end))
+                secondRegions.append(key2)            
+               
+    commands = []
+    thresholdList = [0.3,0.5,0.7,0.8]
+    for tup in tuples:
+        start,end,maxThresh = tup
+        if maxThresh==0.8:
+            commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_out.txt config.sh {} {} {}'.format(gene,start,end,gene,start,end))
+        else:
+            runThresh = [x for x in thresholdList if x<=maxThresh]
+            for thresh in runThresh:
+                commands.append('sbatch -o /n/scratch2/rg252/ACMG59_NEW/outFiles/{}_{}-{}_{}-0.5_out.txt config.sh {} {} 0.5 {} {}'.format(gene,start,end,thresh,gene,thresh,start,end)) 
     
-    commands.sort(key=lambda x:(int((((x.split()[2]).split('/')[-1]).split('_')[1]).split('-')[0]),
-                                            int((((x.split()[2]).split('/')[-1]).split('_')[1]).split('-')[1])))
+    commands.sort(key=lambda x:(int((((x.split()[2]).split('/')[-1]).split('_')[1]).split('-')[0]),int((((x.split()[2]).split('/')[-1]).split('_')[1]).split('-')[1])))
                         
     if len(commands)>0:                         
         for command in commands:
