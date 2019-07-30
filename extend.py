@@ -75,7 +75,7 @@ def extend(gene):
             if end>geneLen:
                 end = geneLen
                 
-            if ((start,end) not in existingRegions) and (key1 not in secondRegions):
+            if (start,end) not in existingRegions:
                 tuples.append((start,end,maxThresh))
                 existingRegions.append((start,end))
                 secondRegions.append(key2)            
