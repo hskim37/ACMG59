@@ -15,7 +15,10 @@ arranges and prints data in comma-separated form so that it can be copied and pa
 Keeps record of submitted jobs in log.txt.
 
 # outputCoords.py
-Helper function for extend.py and stats.py.
+Makes symbolic links for regions that satisfy the rule and have lengths longer than the desired minimum length input by the user. Prints all regions that satisfy the rule and their lengths beforehand so that the user can view them at once.
+
+# outputCoords.py
+Helper function for extend.py, stats.py, and link.py.
 Obtains all existing file paths for specified gene.
 
 # log.py
