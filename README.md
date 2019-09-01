@@ -14,7 +14,7 @@ Extracts all existing EVcouplings-EVfold alignment data for input gene,
 arranges and prints data in comma-separated form so that it can be copied and pasted to spreadsheet right away.
 Keeps record of submitted jobs in log.txt.
 
-# outputCoords.py
+# link.py
 Makes symbolic links for regions that satisfy the rule and have lengths longer than the desired minimum length input by the user. Prints all regions that satisfy the rule and their lengths beforehand so that the user can view them at once.
 
 # outputCoords.py
