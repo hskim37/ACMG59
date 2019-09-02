@@ -24,3 +24,6 @@ Obtains all existing file paths for specified gene.
 # log.py
 Helper function for extend.py and stats.py.
 Appends submitted commands to log.txt with the time at which they were executed.
+
+# printCommand.py
+Used in tako. Prints commands for directories linked within the final directory.
