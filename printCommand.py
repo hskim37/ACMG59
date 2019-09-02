@@ -3,8 +3,7 @@ import sys
 import os
 
 def printCommand(gene):
-    pre = '/net/data/acmg59/final/{}'.format(gene)
-    finalPaths = os.listdir(pre) # ['1-100_0.3-0.5','1-100_0.5-0.5',...]
+    finalPaths = os.listdir('/net/data/acmg59/final/{}'.format(gene)) # ['1-100_0.3-0.5','1-100_0.5-0.5',...]
         
     for path in finalPaths:
         start = int((path.split('_')[0]).split('-')[0])
